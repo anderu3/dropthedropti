@@ -1,27 +1,24 @@
 import json
 
-# Load the JSON data
+
 with open('data.json') as f:
     data = json.load(f)
 
-# Extract relevant data into a list
-item_dps_data = []
 
-# Loop through items, assuming they are in 'items' or similar
-for item in data.get("items", []):
-    # Adjust the key names based on actual JSON structure
-    item_name = item.get("name")
-    dps_increase = item.get("dps_increase_percentage")  # Substitute with actual key
+# "name": "1273/2602/raid-mythic/212019/639/7601/legs/", -mythic legs 955,278 dps Lightless Scanveger's Stalkings, itemID 212019
+# "name": "1273/2602/raid-mythic/212454/639/0/trinket2/", -trink, queens Mandate itemID 212454
+# Raid boss identifier = data.json["sim"]["profilesets"]["results"]["name"]
+
+test_list = []
+
+for item in data.items():
+    if data['sim']['profilesets']['results'][0]['name'].startswith('1273/2602/raid-mythic/'):
+        test_list.append(item)
+
+print(test_list)
     
-    # Append to list if dps_increase is found
-    if item_name and dps_increase:
-        item_dps_data.append({
-            "name": item_name,
-            "dps_increase": dps_increase
-        })
 
-# Write the extracted data to a new JSON file
-with open('item_dps_data.json', 'w') as outfile:
-    json.dump(item_dps_data, outfile, indent=4)
 
-print("Data successfully written to item_dps_data.json")
+# with open('testing_data.json', 'w') as outfile:
+#     json.dump(data, outfile, indent=4)
+
