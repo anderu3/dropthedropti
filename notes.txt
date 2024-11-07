@@ -1,0 +1,17 @@
+"name": "1273/2602/raid-mythic/212019/639/7601/legs/", -mythic legs 955,278 dps Lightless Scanveger's Stalkings, itemID 212019
+"name": "1273/2602/raid-mythic/212454/639/0/trinket2/", -trink, queens Mandate itemID 212454
+
+
+2607 - Ulgrax
+2611 - Bloodbound Horror
+2599 - Sik'ran
+2609 - Rasha'nan
+2612 - Broodtwister
+2601 - Nexus Princess
+2608 - Silken Court
+2602 - Ansurek
+-67 - Trash mobs
+
+// Raid boss identifier = data.json["sim"]["profilesets"]["results"]["name"]
+// Player Name = data.json["sim"]["players"]["name"]
+// Player Average DPS = data.json["sim"]["players"]["collected_data"]["dps"]["mean"]
