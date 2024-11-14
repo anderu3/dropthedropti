@@ -3,8 +3,8 @@ import requests
 import time
 
 # blizz API creds, DELETE BEFORE PUSH CAUSE IM TOO LAZY TO HIDE IT 
-client_id = ''
-client_secret = ''
+client_id = 'ebf3c5959d3f49f381fad9feef87c6f0'
+client_secret = 'JXqxxT8kf5pSR2MCCiflb4cJYLGLfD7P'
 
 # access token for bnet
 auth_url = 'https://us.battle.net/oauth/token'
@@ -13,11 +13,11 @@ auth_response.raise_for_status()
 access_token = auth_response.json()['access_token']
 
 # tried caching items to not request from blizz API for speed maybe but not working, i dunno, might have to retouch this further down
-item_cache = {}
+
 
 def get_item_details(item_id):
-    if item_id in item_cache:
-        return item_cache[item_id]
+    if item_id in item_details_cache:
+        return item_details_cache[item_id]
     
     api_url = f'https://us.api.blizzard.com/data/wow/item/{item_id}'
     headers = {'Authorization': f'Bearer {access_token}'}
@@ -27,7 +27,7 @@ def get_item_details(item_id):
     item_details = response.json()
     
     # cache the item details
-    item_cache[item_id] = item_details
+    item_details_cache[item_id] = item_details
     return item_details
 
 
@@ -80,6 +80,7 @@ for link in formatted_links:
 with open('master.json', 'w') as json_file:
     json.dump(master_data, json_file, indent=4)
 
+
 print("master.json updated with data from all links")
 
 with open('master.json') as f:
@@ -96,13 +97,26 @@ for player_data in master_data:
 
 item_details_cache = {}
 
+#code here to cache the items with dictionary of item_id: item_details
+
+# with open('items.json', 'r') as json_file:
+#     item_details_cache = json.load(json_file)
+
 # TAKING THE LONGEST HERE AT ~50 SECONDS TO PROCESS ALL ITEMS, CAN DO BETTER HERE
 start_time = time.time()
 print(unique_item_ids)
 for item_id in unique_item_ids:
-    item_details_cache[item_id] = get_item_details(item_id)
+    if item_id not in item_details_cache:
+        item_details_cache[item_id] = get_item_details(item_id)
+
+# IT IS A TIER PIECE WHEN THIS EXISTS:
+# ["itemnumber"]["preview_item"]["set"] = True
+ 
 end_time = time.time()
 print(f"Time taken to fetch item details: {end_time - start_time} seconds")
+
+with open('full_items.json', 'w') as json_file:
+    json.dump(item_details_cache, json_file, indent=4)
 
 boss_dict = {
     "2607": "Ulgrax",
@@ -128,19 +142,19 @@ for player_data in master_data:
         name = result['name']
         mean = result['mean']
         if name.startswith("1273/"):
-            item_identifier = name.split('/')[3]
+            item_number = name.split('/')[3]
+            print(f'Item Identifier: {item_number}')
             boss_id = name.split('/')[1]
             boss_name = boss_dict.get(boss_id, "Unknown Boss")
-            item_details = item_details_cache[item_identifier]
-            item_name = item_details['name']
+            item_name = item_details_cache[item_number]
             dps_increase = round(((mean / player_average_dps) - 1) * 100, 2)
 
-            if item_identifier not in boss_and_items[boss_name]:
-                boss_and_items[boss_name][item_identifier] = {
+            if item_number not in boss_and_items[boss_name]:
+                boss_and_items[boss_name][item_number] = {
                     "item_name": item_name,
                     "dps_increase": [],
                 }
-            boss_and_items[boss_name][item_identifier]["dps_increase"].append({
+            boss_and_items[boss_name][item_number]["dps_increase"].append({
                 "player_name": player_name,
                 "dps_increase": dps_increase
             })

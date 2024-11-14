@@ -15,3 +15,8 @@
 // Raid boss identifier = data.json["sim"]["profilesets"]["results"]["name"]
 // Player Name = data.json["sim"]["players"]["name"]
 // Player Average DPS = data.json["sim"]["players"]["collected_data"]["dps"]["mean"]
+
+
+raidbots link:
+
+https://www.raidbots.com/simbot/report/1K6KTrVUv8xThbwSGCarZZ
