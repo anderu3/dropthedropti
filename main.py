@@ -3,8 +3,8 @@ import requests
 import time
 
 # blizz API creds, DELETE BEFORE PUSH CAUSE IM TOO LAZY TO HIDE IT 
-client_id = 'ebf3c5959d3f49f381fad9feef87c6f0'
-client_secret = 'JXqxxT8kf5pSR2MCCiflb4cJYLGLfD7P'
+client_id = ''
+client_secret = ''
 
 # access token for bnet
 auth_url = 'https://us.battle.net/oauth/token'
